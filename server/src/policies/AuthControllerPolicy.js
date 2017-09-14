@@ -1,7 +1,7 @@
 const Joi = require('joi')
 
 module.exports = {
-  register (req, res, next) {
+  signup (req, res, next) {
     const schema = {
       // need to encrypt this
       email: Joi.string().email(),

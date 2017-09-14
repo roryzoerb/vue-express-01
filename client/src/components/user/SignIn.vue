@@ -1,28 +1,39 @@
 <template>
-  <v-layout>
+  <v-layout column>
     <v-flex xs6 offset-xs3>
       <div class='white elevation-2'>
         <v-toolbar flat dense class='cyan' dark>
-          <v-toolbar-title>Registration</v-toolbar-title>
+          <v-toolbar-title>Sign In</v-toolbar-title>
         </v-toolbar>
-          <div>
-            <input
-              type='text'
+        <div class='pl-4 pr-4 pt-2 pb-2'>
+          <v-flex>
+            <v-text-field
+              class='input-group--focused'
               name='email'
+              label='Email'
+              id='email'
               v-model='email'
-              placeholder='Email'/>
-          <br>
-            <input
-              type='password'
+            ></v-text-field>
+          </v-flex>
+          <v-flex>
+            <v-text-field
+              class='input-group--focused'
+              counter
               name='password'
+              label='Password'
+              id='password'
               v-model='password'
-              placeholder='Password'/>
-          <br>
-          <div class='red-alert' v-if='error' v-on:click='dismissError' v-html='error'>
-            <div style='float: right; cursor: pointer'><span v-on:click='dismissError'><i class='ti-close'></i></span></div>
-            <div>{{ this.error }}</div>
-          </div>
-          <button v-on:click='registerUser()'>Register</button>
+              min='8'
+              max='32'
+              hint='8 to 32 characters'
+              type='password'
+            ></v-text-field>
+            <div class='red-alert' v-if='error' v-on:click='dismissError' v-html='error'>
+              <div style='float: right; cursor: pointer'><span v-on:click='dismissError'><i class='ti-close'></i></span></div>
+              <div>{{ this.error }}</div>
+            </div>
+            <v-btn dark class='cyan' v-on:click='signIn()'>Sign In</v-btn>
+          </v-flex>
         </div>
       </div>
     </v-flex>
@@ -30,7 +41,7 @@
 </template>
 
 <script>
-import Auth from '@/services/AuthenticationService'
+import Auth from '@/services/AuthService'
 export default {
   data () {
     return {
@@ -48,13 +59,13 @@ export default {
     // }
   },
   methods: {
-    async registerUser () {
+    async signIn () {
       try {
-        const response = await Auth.register({
+        await Auth.signin({
           email: this.email,
           password: this.password
         })
-        console.log(response.data)
+        // console.log(response.data)
       } catch (error) {
         this.error = error.response.data.error
       }
@@ -83,4 +94,3 @@ export default {
   border-radius: 5px;
 }
 </style>
-

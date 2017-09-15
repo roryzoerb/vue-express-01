@@ -13,7 +13,11 @@ module.exports = {
   async signup (req, res) {
     try {
       const user = await User.create(req.body)
-      res.send(user.toJSON())
+      const userJson = user.toJSON()
+      res.send({
+        user: userJson,
+        token: jwtSignUser(userJson)
+      })
     } catch (err) {
       res.status(400).send({
         error: 'Email account is already in use.'
@@ -31,18 +35,20 @@ module.exports = {
           email: email
         }
       })
+      console.log('have user')
       if (!user) {
         return res.status(403).send({
           error: 'The Sign In information was incorrect'
         })
       }
-      const isValidPassword = (password === user.password)
+      const isValidPassword = await user.comparePassword(password)
       if (!isValidPassword) {
         return res.status(403).send({
           error: 'The Sign In information was incorrect'
         })
       }
       const userJson = user.toJSON()
+      console.log(userJson)
       res.send({
         user: userJson,
         token: jwtSignUser(userJson)

@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import Auth from '@/services/AuthService'
+import AuthService from '@/services/AuthService'
 export default {
   data () {
     return {
@@ -61,7 +61,7 @@ export default {
   methods: {
     async signIn () {
       try {
-        await Auth.signin({
+        await AuthService.signin({
           email: this.email,
           password: this.password
         })

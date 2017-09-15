@@ -61,11 +61,12 @@ export default {
   methods: {
     async signIn () {
       try {
-        await AuthService.signin({
+        const response = await AuthService.signin({
           email: this.email,
           password: this.password
         })
-        // console.log(response.data)
+        this.$store.dispatch('setToken', response.data.token)
+        this.$store.dispatch('setUser', response.data.user)
       } catch (error) {
         this.error = error.response.data.error
       }

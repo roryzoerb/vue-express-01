@@ -14,7 +14,7 @@
     </v-toolbar-items> -->
 
     <v-spacer/>
-    <v-toolbar-items>
+    <v-toolbar-items v-if='!$store.state.userLoggedIn'>
       <router-link to='/signin' class='btn cyan'>
         Sign In
       </router-link>
